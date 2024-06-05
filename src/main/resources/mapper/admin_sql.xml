@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.zzz.mapper.AdminMapper">
+	<insert id="adminInsert" parameterType="adminDto">
+		INSERT INTO admin (a_id, a_pw, a_name, a_phone, a_approval)
+		VALUES (#{adminDto.a_id}, #{adminDto.a_pw},
+						#{adminDto.a_name}, #{adminDto.a_phone}, #{adminDto.a_approval})
+	</insert>
+	<select id="loginConfirm"  parameterType="adminDto" resultType="adminDto">
+		SELECT a_id, a_pw, a_name, a_phone, a_approval FROM admin
+		WHERE a_id = #{adminDto.a_id} AND a_approval > 0
+	</select>
+	
+	<select id="adminList"  parameterType="adminDto" resultType="adminDto">
+		SELECT a_id, a_pw, a_name, a_phone, a_approval FROM admin
+	</select>
+	<update id="updateAdminAccount" parameterType="String">
+			UPDATE admin SET a_approval = 1
+			WHERE a_id = #{adminDto.a_id}
+	</update >
+	<update id="modifyAccountConfirm"  parameterType="adminDto">
+			UPDATE admin SET a_name = #{adminDto.a_id}, a_phone = #{adminDto.a_phone}
+			WHERE a_id = #{adminDto.a_id}
+	</update >
+	<select id="search"  resultType="adminDto">
+			SELECT * FROM admin
+			WHERE a_id LIKE CONCAT('%', #{keyword}, '%')
+			OR a_name LIKE CONCAT('%', #{keyword}, '%')
+			OR a_phone LIKE CONCAT('%', #{keyword}, '%')
+	</select>
+<!-- 	<select id="searchAdmin" parameterType="String"> -->
+<!-- 	SELECT a_id, a_pw, a_name, a_phone, a_approval FROM admin -->
+<!-- 	<choose> -->
+<!-- 		<when test='"Name",equals(category)'> -->
+<!-- 		WHERE a_name LIKE CONCAT('%', #{keyword}, '%') -->
+<!-- 		</when> -->
+<!-- 		<when test='"Phone",equals(category)'> -->
+<!-- 		WHERE a_phone LIKE CONCAT('%', #{keyword}, '%') -->
+<!-- 		</when> -->
+<!-- 		<when test='"Account",equals(category)'> -->
+<!-- 		WHERE a_id LIKE CONCAT('%', #{keyword}, '%') -->
+<!-- 		</when> -->
+<!-- 	</choose> -->
+<!-- 	</select> -->
+</mapper>
